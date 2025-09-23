@@ -1,0 +1,82 @@
+#include <stdio.h>
+#define SIZE 5   // You can change size as needed
+
+int queue[SIZE];
+int front = -1, rear = -1;
+
+// Enqueue operation
+void enqueue(int x) {
+    if ((front == (rear + 1) % SIZE)) {
+        printf("Queue Overflow (Full)\n");
+        return;
+    }
+    if (front == -1) {  // First element
+        front = 0;
+    }
+    rear = (rear + 1) % SIZE;
+    queue[rear] = x;
+    printf("%d enqueued to queue\n", x);
+}
+
+// Dequeue operation
+int dequeue() {
+    if (front == -1) {
+        printf("Queue Underflow (Empty)\n");
+        return -1;
+    }
+    int item = queue[front];
+    if (front == rear) {
+        // Queue becomes empty
+        front = rear = -1;
+    } else {
+        front = (front + 1) % SIZE;
+    }
+    return item;
+}
+
+// Display operation
+void display() {
+    if (front == -1) {
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue elements: ");
+    int i = front;
+    while (1) {
+        printf("%d ", queue[i]);
+        if (i == rear) break;
+        i = (i + 1) % SIZE;
+    }
+    printf("\n");
+}
+
+int main() {
+    int choice, value;
+
+    while (1) {
+        printf("\nCircular Queue Operations:\n");
+        printf("1. Enqueue\n2. Dequeue\n3. Display\n4. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter value to enqueue: ");
+                scanf("%d", &value);
+                enqueue(value);
+                break;
+            case 2:
+                value = dequeue();
+                if (value != -1)
+                    printf("Dequeued: %d\n", value);
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                return 0;
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+}
